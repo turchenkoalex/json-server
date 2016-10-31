@@ -4,7 +4,15 @@ module.exports = function (db, name) {
   var router = express.Router()
 
   function show (req, res, next) {
-    res.locals.data = db.get(name).value()
+    let data = db.get(name).value()
+    if (req.url !== '/') {
+      let key = req.url.slice(2)
+      if (data[key]) {
+        data = data[key]
+      }
+    }
+
+    res.locals.data = data
     next()
   }
 
